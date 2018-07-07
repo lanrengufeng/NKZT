@@ -40,5 +40,5 @@ public class Main {
 		System.out.println(cnt);
 		in.close();
 	}
-
+ 
 }
