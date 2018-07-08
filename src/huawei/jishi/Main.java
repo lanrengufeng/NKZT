@@ -4,8 +4,51 @@ import java.util.Scanner;
 
 public class Main {
 	public static void main(String[] args) {
+
+		hexToDec();
+
+		// splitStrings2();
+		// splitStrings();
 		// lastStringLength();
-		charNum();
+		// charNum();
+	}
+
+	/**
+	 * 5
+	 * 题目描述 写出一个程序，接受一个十六进制的数值字符串，输出该数值的十进制字符串。（多组同时输入 ）
+	 * 
+	 * 输入描述: 输入一个十六进制的数值字符串。
+	 * 
+	 * 输出描述: 输出该数值的十进制字符串。
+	 */
+	public static void hexToDec() {
+		Scanner in = new Scanner(System.in);
+		while (in.hasNext()) {
+			String data = in.next();
+			data = data.substring(2);
+			System.out.println(Integer.parseInt(data, 16) + "");
+		}
+		in.close();
+	}
+
+	/**
+	 * 4 题目描述 •连续输入字符串，请按长度为8拆分每个字符串后输出到新的字符串数组； •长度不是8整数倍的字符串请在后面补数字0，空字符串不处理。
+	 * 输入描述: 连续输入字符串(输入2次,每个字符串长度小于100)
+	 * 
+	 * 输出描述: 输出到长度为8的新字符串数组
+	 */
+	public static void splitStrings2() {
+		Scanner in = new Scanner(System.in);
+		while (in.hasNextLine()) {
+			String s = in.nextLine();
+			if (s.length() % 8 != 0)
+				s += "0000000";
+			while (s.length() >= 8) {
+				System.out.println(s.substring(0, 8));
+				s = s.substring(8);
+			}
+		}
+		in.close();
 	}
 
 	/**
@@ -15,7 +58,37 @@ public class Main {
 	 * 输出描述: 输出到长度为8的新字符串数组
 	 */
 	public static void splitStrings() {
+		Scanner in = new Scanner(System.in);
+		String s1 = in.nextLine();
+		String s2 = in.nextLine();
+		int index = 0;
+		int len1 = s1.length();
+		int len2 = s2.length();
+		while (len1 - index >= 8) {
+			System.out.println(s1.substring(index, index + 8));
+			index += 8;
+		}
+		if (len1 - index > 0) {
+			String s11 = s1.substring(index);
+			for (int i = 0; i < 8 - len1 + index; i++) {
+				s11 += 0;
+			}
+			System.out.println(s11);
+		}
+		index = 0;
+		while (len2 - index >= 8) {
+			System.out.println(s2.substring(index, index + 8));
+			index += 8;
+		}
+		if (len2 - index > 0) {
+			String s22 = s2.substring(index);
+			for (int i = 0; i < 8 - len2 + index; i++) {
+				s22 += 0;
+			}
+			System.out.println(s22);
+		}
 
+		in.close();
 	}
 
 	/**
