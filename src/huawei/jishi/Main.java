@@ -1,20 +1,99 @@
 package huawei.jishi;
 
+import java.util.LinkedHashSet;
+import java.util.Map.Entry;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeMap;
 
 public class Main {
 	public static void main(String[] args) {
 		Main mm = new Main();
-		Scanner in = new Scanner(System.in);
-		long num = in.nextLong();
+
+		mm.noRepeatNum();
 		
-		System.out.println(mm.getResult(num));
+		//mm.mergeTable();
+
+		// mm.approximateValue();
+
+		/*
+		 * Scanner in = new Scanner(System.in); long num = in.nextLong();
+		 * 
+		 * System.out.println(mm.getResult(num));
+		 */
 		// hexToDec();
 
 		// splitStrings2();
 		// splitStrings();
 		// lastStringLength();
 		// charNum();
+		// in.close();
+	}
+
+	/**
+	 * 题目描述 输入一个int型整数，按照从右向左的阅读顺序，返回一个不含重复数字的新的整数。
+	 * 
+	 * 输入描述: 输入一个int型整数
+	 * 
+	 * 输出描述: 按照从右向左的阅读顺序，返回一个不含重复数字的新的整数
+	 */
+	public void noRepeatNum() {
+		Scanner in = new Scanner(System.in);
+		String n = in.next();
+		LinkedHashSet<Character> set = new LinkedHashSet<Character>();
+		for(int i=n.length()-1;i>=0;i--){
+			set.add(n.charAt(i));
+		}
+		n = "";
+		for (Character character : set) {
+			n+=character;
+		}
+		System.out.println(Integer.valueOf(n));
+		in.close();
+	}
+
+	/**
+	 * 题目描述 数据表记录包含表索引和数值，请对表索引相同的记录进行合并，即将相同索引的数值进行求和运算，输出按照key值升序进行输出。
+	 * 
+	 * 输入描述: 先输入键值对的个数 然后输入成对的index和value值，以空格隔开
+	 * 
+	 * 输出描述: 输出合并后的键值对（多行）
+	 */
+	public void mergeTable() {
+		Scanner in = new Scanner(System.in);
+		int n = in.nextInt();
+		TreeMap<Integer, Integer> map = new TreeMap<Integer, Integer>();
+
+		for (int i = 0; i < n; i++) {
+			int key = in.nextInt();
+			int value = in.nextInt();
+			if (map.containsKey(key))
+				map.put(key, map.get(key) + value);
+			else
+				map.put(key, value);
+		}
+		Set<Entry<Integer, Integer>> entrySet = map.entrySet();
+		for (Entry<Integer, Integer> entry : entrySet) {
+			System.out.println(entry.getKey() + " " + entry.getValue());
+		}
+		in.close();
+	}
+
+	/**
+	 * 题目描述 写出一个程序，接受一个正浮点数值，输出该数值的近似整数值。如果小数点后数值大于等于5,向上取整；小于5，则向下取整。
+	 * 
+	 * 输入描述: 输入一个正浮点数值
+	 * 
+	 * 输出描述: 输出该数值的近似整数值
+	 */
+	public void approximateValue() {
+		Scanner in = new Scanner(System.in);
+		float num = in.nextFloat();
+		if (num - (int) num >= 0.5)
+			System.out.println((int) num + 1);
+		else
+			System.out.println((int) num);
+
 		in.close();
 	}
 
@@ -48,27 +127,27 @@ public class Main {
 	 * @return
 	 */
 	public String getResult(long ulDataInput) {
-		if(ulDataInput<=1)
+		if (ulDataInput <= 1)
 			return "";
 		String res = "";
 		long num = ulDataInput;
-		while(num!=1){
-			for(int i=2;i<=num;i++){
-				if(num%i==0){
-					num/=i;
-					res = res+i+" ";
+		while (num != 1) {
+			for (int i = 2; i <= num; i++) {
+				if (num % i == 0) {
+					num /= i;
+					res = res + i + " ";
 					break;
 				}
 			}
 		}
 		return res;
 	}
-	
-	public boolean isPrime(long num){
-		if(num<2)
+
+	public boolean isPrime(long num) {
+		if (num < 2)
 			return false;
-		for(int i=2;i<num;i++){
-			if(num%i==0)
+		for (int i = 2; i < num; i++) {
+			if (num % i == 0)
 				return false;
 		}
 		return true;
