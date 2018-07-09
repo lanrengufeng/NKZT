@@ -1,16 +1,32 @@
 package leetcode;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Stack;
 
 public class Solution {
 	public static void main(String[] args) {
 		Solution so = new Solution();
 
-		Point[] points = { new Point(84, 250), new Point(0, 0), new Point(1, 0), new Point(0, -70), new Point(0, -70), new Point(1, -1), new Point(21, 10),
-				new Point(42, 90), new Point(-42, -230) };
-		System.out.println(so.maxPoints(points));
+		ListNode n = new ListNode(5);
+		n.next = new ListNode(4);
+		n.next.next = new ListNode(3);
+		n.next.next.next = new ListNode(2);
+
+		ListNode res = so.insertionSortList(n);
+		while (res != null) {
+			System.out.println(res.val);
+			res = res.next;
+		}
+
+		/*
+		 * Point[] points = { new Point(84, 250), new Point(0, 0), new Point(1,
+		 * 0), new Point(0, -70), new Point(0, -70), new Point(1, -1), new
+		 * Point(21, 10), new Point(42, 90), new Point(-42, -230) };
+		 * System.out.println(so.maxPoints(points));
+		 */
 
 		/*
 		 * String[] tokens = { "2", "1", "+", "3", "*" };
@@ -32,6 +48,56 @@ public class Solution {
 	}
 
 	/**
+	 * Given a binary tree, return the postorder traversal of its nodes' values.
+	 * 
+	 * @param root
+	 * @return
+	 */
+	public ArrayList<Integer> postorderTraversal(TreeNode root) {
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		if (root == null)
+			return list;
+		Stack<TreeNode> s1 = new Stack<TreeNode>();
+		Stack<TreeNode> s2 = new Stack<TreeNode>();
+		s1.push(root);
+		while (!s1.isEmpty()) {
+			root = s1.pop();
+			s2.push(root);
+			if (root.left != null)
+				s1.push(root.left);
+			if (root.right != null)
+				s1.push(root.right);
+		}
+		while (!s2.isEmpty())
+			list.add(s2.pop().val);
+		return list;
+	}
+
+	/**
+	 * Sort a linked list using insertion sort.
+	 * 
+	 * @param head
+	 * @return
+	 */
+	public ListNode insertionSortList(ListNode head) {
+		if (head == null || head.next == null)
+			return head;
+		ListNode preHead = new ListNode(-1);
+		while (head != null) {
+			// head是要插入的节点，next是下一个节点，pre是新链表中的节点
+			ListNode pre = preHead;
+			ListNode next = head.next;
+			while (pre.next != null && pre.next.val <= head.val) {
+				pre = pre.next;
+			}
+			head.next = pre.next;
+			pre.next = head;
+			head = next;
+		}
+		return preHead.next;
+	}
+
+	/**
 	 * Sort a linked list in O(n log n) time using constant space complexity.
 	 * 
 	 * @param head
@@ -43,10 +109,11 @@ public class Solution {
 		ListNode mid = getMid(head);
 		ListNode midNext = mid.next;
 		mid.next = null;
-		/*ListNode n1 = sortList(head);
-		ListNode n2 = sortList(midNext);
-		return mergeList(n1, n2);*/
-		return mergeList(sortList(head),sortList(midNext));
+		/*
+		 * ListNode n1 = sortList(head); ListNode n2 = sortList(midNext); return
+		 * mergeList(n1, n2);
+		 */
+		return mergeList(sortList(head), sortList(midNext));
 	}
 
 	private ListNode getMid(ListNode head) {
