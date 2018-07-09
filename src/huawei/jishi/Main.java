@@ -10,9 +10,11 @@ public class Main {
 	public static void main(String[] args) {
 		Main mm = new Main();
 
-		mm.noRepeatNum();
+		mm.numOfChar();
 		
-		//mm.mergeTable();
+		//mm.noRepeatNum();
+
+		// mm.mergeTable();
 
 		// mm.approximateValue();
 
@@ -31,6 +33,28 @@ public class Main {
 	}
 
 	/**
+	 * 题目描述 编写一个函数，计算字符串中含有的不同字符的个数。字符在ACSII码范围内(0~127)。不在范围内的不作统计。
+	 * 
+	 * 输入描述: 输入N个字符，字符在ACSII码范围内。
+	 * 
+	 * 输出描述: 输出范围在(0~127)字符的个数。
+	 */
+	public void numOfChar() {
+		Scanner in = new Scanner(System.in);
+		String s = in.next();
+		int[] arr=new int[128];
+		for(int i=0;i<s.length();i++){
+			char ch = s.charAt(i);
+			if(ch<=127&&ch>=0);
+				arr[ch] = 1;
+		}
+		for(int i=1;i<arr.length;i++)
+			arr[i]+=arr[i-1];
+		System.out.println(arr[arr.length-1]);
+		in.close();
+	}
+
+	/**
 	 * 题目描述 输入一个int型整数，按照从右向左的阅读顺序，返回一个不含重复数字的新的整数。
 	 * 
 	 * 输入描述: 输入一个int型整数
@@ -41,12 +65,12 @@ public class Main {
 		Scanner in = new Scanner(System.in);
 		String n = in.next();
 		LinkedHashSet<Character> set = new LinkedHashSet<Character>();
-		for(int i=n.length()-1;i>=0;i--){
+		for (int i = n.length() - 1; i >= 0; i--) {
 			set.add(n.charAt(i));
 		}
 		n = "";
 		for (Character character : set) {
-			n+=character;
+			n += character;
 		}
 		System.out.println(Integer.valueOf(n));
 		in.close();
