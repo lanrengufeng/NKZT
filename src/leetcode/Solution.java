@@ -32,6 +32,53 @@ public class Solution {
 	}
 
 	/**
+	 * Sort a linked list in O(n log n) time using constant space complexity.
+	 * 
+	 * @param head
+	 * @return
+	 */
+	public ListNode sortList(ListNode head) {
+		if (head == null || head.next == null)
+			return head;
+		ListNode mid = getMid(head);
+		ListNode midNext = mid.next;
+		mid.next = null;
+		/*ListNode n1 = sortList(head);
+		ListNode n2 = sortList(midNext);
+		return mergeList(n1, n2);*/
+		return mergeList(sortList(head),sortList(midNext));
+	}
+
+	private ListNode getMid(ListNode head) {
+		if (head == null || head.next == null)
+			return head;
+		ListNode mid = head;
+		ListNode tmp = head;
+		while (tmp.next != null && tmp.next.next != null) {
+			mid = mid.next;
+			tmp = tmp.next.next;
+		}
+		return mid;
+	}
+
+	private ListNode mergeList(ListNode p1, ListNode p2) {
+		ListNode preHead = new ListNode(-1);
+		ListNode cur = preHead;
+		while (p1 != null && p2 != null) {
+			if (p1.val < p2.val) {
+				cur.next = p1;
+				p1 = p1.next;
+			} else {
+				cur.next = p2;
+				p2 = p2.next;
+			}
+			cur = cur.next;
+		}
+		cur.next = p1 == null ? p2 : p1;
+		return preHead.next;
+	}
+
+	/**
 	 * Given n points on a 2D plane, find the maximum number of points that lie
 	 * on the same straight line.
 	 * 
@@ -48,7 +95,7 @@ public class Solution {
 			int dup = 1; // 重合的点数
 			int vtl = 0; // 垂直的点数
 			HashMap<String, Integer> map = new HashMap<String, Integer>();
-			//HashMap<Float, Integer> map = new HashMap<Float, Integer>();
+			// HashMap<Float, Integer> map = new HashMap<Float, Integer>();
 			int x1 = points[i].x;
 			int y1 = points[i].y;
 			for (int j = 0; j < points.length; j++) {
@@ -62,9 +109,10 @@ public class Solution {
 					else
 						vtl++;
 				else {
-					//String k = Math.round((y1 - y2)*1000000.0 / (x1 - x2))/1000000+"";
-					String k = String.format("%.4f",((double)(y1 - y2)) / (x1 - x2));
-					//float k = (float)(y1-y2)/(x1-x2);
+					// String k = Math.round((y1 - y2)*1000000.0 / (x1 -
+					// x2))/1000000+"";
+					String k = String.format("%.4f", ((double) (y1 - y2)) / (x1 - x2));
+					// float k = (float)(y1-y2)/(x1-x2);
 					if (map.containsKey(k))
 						map.put(k, map.get(k) + 1);
 					else
