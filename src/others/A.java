@@ -6,7 +6,7 @@ package others;
  *
  */
 public class A {
-	A a = new A(1);
+	//A a = new A(1);
 	public A(int a){
 		System.out.println(a);
 	}
@@ -14,8 +14,8 @@ public class A {
 	//A a = new A(1);
 	static A aa =  new A(2);
 	public static void main(String[] args) {
-		System.out.println("main");
-		new A(3);
+		/*System.out.println("main");
+		new A(3);*/
 		
 	}
 }

@@ -6,13 +6,15 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeMap;
 
+import leetcode.TreeNode;
+
 public class Main {
 	public static void main(String[] args) {
 		Main mm = new Main();
 
 		mm.numOfChar();
-		
-		//mm.noRepeatNum();
+
+		// mm.noRepeatNum();
 
 		// mm.mergeTable();
 
@@ -32,6 +34,8 @@ public class Main {
 		// in.close();
 	}
 
+
+
 	/**
 	 * 题目描述 编写一个函数，计算字符串中含有的不同字符的个数。字符在ACSII码范围内(0~127)。不在范围内的不作统计。
 	 * 
@@ -42,15 +46,16 @@ public class Main {
 	public void numOfChar() {
 		Scanner in = new Scanner(System.in);
 		String s = in.next();
-		int[] arr=new int[128];
-		for(int i=0;i<s.length();i++){
+		int[] arr = new int[128];
+		for (int i = 0; i < s.length(); i++) {
 			char ch = s.charAt(i);
-			if(ch<=127&&ch>=0);
-				arr[ch] = 1;
+			if (ch <= 127 && ch >= 0)
+				;
+			arr[ch] = 1;
 		}
-		for(int i=1;i<arr.length;i++)
-			arr[i]+=arr[i-1];
-		System.out.println(arr[arr.length-1]);
+		for (int i = 1; i < arr.length; i++)
+			arr[i] += arr[i - 1];
+		System.out.println(arr[arr.length - 1]);
 		in.close();
 	}
 
