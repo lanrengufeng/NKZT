@@ -3,23 +3,24 @@ package leetcode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 
 public class Solution {
 	public static void main(String[] args) {
 		Solution so = new Solution();
 
-		ListNode n = new ListNode(5);
-		n.next = new ListNode(4);
+		ListNode n = new ListNode(1);
+		n.next = new ListNode(2);
 		n.next.next = new ListNode(3);
-		n.next.next.next = new ListNode(2);
+		n.next.next.next = new ListNode(4);
 
-		ListNode res = so.insertionSortList(n);
-		while (res != null) {
-			System.out.println(res.val);
-			res = res.next;
-		}
+		so.reorderList(n);
+
+		/*
+		 * ListNode res = so.insertionSortList(n); while (res != null) {
+		 * System.out.println(res.val); res = res.next; }
+		 */
 
 		/*
 		 * Point[] points = { new Point(84, 250), new Point(0, 0), new Point(1,
@@ -45,6 +46,159 @@ public class Solution {
 		 * int[] A = { 2, 2, 1, 0, 4 }; System.out.println(new
 		 * Solution().canJump(A));
 		 */
+	}
+
+	/**
+	 * Given a string s and a dictionary of words dict, add spaces in s to
+	 * construct a sentence where each word is a valid dictionary word.
+	 * 
+	 * Return all such possible sentences.
+	 * 
+	 * For example, given s ="catsanddog", dict =["cat", "cats", "and", "sand",
+	 * "dog"].
+	 * 
+	 * A solution is["cats and dog", "cat sand dog"].
+	 * 
+	 * 
+	 * @param s
+	 * @param dict
+	 * @return
+	 */
+	public ArrayList<String> wordBreak(String s, Set<String> dict) {
+		ArrayList<String> list = new ArrayList<String>();
+		if(s==null||s.length()<1||dict==null)
+			return list;
+		String tmp = s;		//辅助字符串
+		ArrayList<String> list2 = new ArrayList<String>();	//辅助集合
+		for(String string:dict){
+			if(tmp.contains(string)){	//如果字符串中有字典中的单词，则替换为空格
+				tmp = tmp.replace(string, "   ");		
+				list2.add(string);
+			}
+		}
+		return list;
+	}
+
+	/**
+	 * Given a linked list, determine if it has a cycle in it.
+	 * 
+	 * Follow up: Can you solve it without using extra space?
+	 * 
+	 * 
+	 * @param head
+	 * @return
+	 */
+	public boolean hasCycle(ListNode head) {
+		if (head == null || head.next == null)
+			return false;
+		ListNode p1 = head;
+		ListNode p2 = head;
+		while (p2 != null && p2.next != null) {
+			p1 = p1.next;
+			p2 = p2.next.next;
+			if (p1 == p2)
+				return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Given a linked list, return the node where the cycle begins. If there is
+	 * no cycle, returnnull.
+	 * 
+	 * Follow up: Can you solve it without using extra space?
+	 * 
+	 * @param head
+	 * @return
+	 */
+	public ListNode detectCycle(ListNode head) {
+		if (head == null || head.next == null)
+			return null;
+		ListNode p1 = head;
+		ListNode p2 = head;
+		while (p2 != null && p2.next != null) {
+			p1 = p1.next;
+			p2 = p2.next.next;
+			if (p1 == p2)
+				break;
+		}
+		if (p2 == null || p2.next == null)
+			return null; // 没有环
+		p1 = head;
+		while (p1 != p2) {
+			p1 = p1.next;
+			p2 = p2.next;
+		}
+		return p1;
+	}
+
+	/**
+	 * Given a singly linked list L: L 0→L 1→…→L n-1→L n, reorder it to: L 0→L n
+	 * →L 1→L n-1→L 2→L n-2→…
+	 * 
+	 * You must do this in-place without altering the nodes' values.
+	 * 
+	 * For example, Given{1,2,3,4}, reorder it to{1,4,2,3}.
+	 * 
+	 * @param head
+	 */
+	public void reorderList(ListNode head) {
+		if (head == null || head.next == null || head.next.next == null)
+			return; // 链表长度小于3的时候不需要转换
+		ListNode p1 = head; // 一次走一步
+		ListNode p2 = head; // 一次走两步
+		while (p2.next != null && p2.next.next != null) {
+			p1 = p1.next;
+			p2 = p2.next.next;
+		}
+		ListNode mid = p1; // 链表的中点位置
+		// 翻转链表的后半部分
+		ListNode cur = mid.next; // 中点的下一个节点，翻转的开始位置
+		ListNode next = null; // 当前节点的下一个位置
+		ListNode pre = mid; // 当前节点的上一个节点
+		mid.next = null; // 中间节点指向null
+		while (cur != null) {
+			next = cur.next; // 记录下一个节点
+			cur.next = pre; // 指向上一个节点
+			pre = cur;
+			cur = next;
+		}
+		ListNode end = pre; // 翻转后链表的右侧头结点
+		ListNode start = head; // 左侧头结点
+		while (true) {
+			if (start == end || start == null) // 已遍历完毕
+				break;
+			ListNode startNext = start.next;
+			ListNode endNext = end.next;
+			start.next = end;
+			end.next = startNext;
+			start = startNext;
+			end = endNext;
+		}
+	}
+
+	/**
+	 * Given a binary tree, return the preorder traversal of its nodes' values.
+	 * 
+	 * @param root
+	 * @return
+	 */
+	public ArrayList<Integer> preorderTraversal(TreeNode root) {
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		if (root == null)
+			return list;
+		Stack<TreeNode> stack = new Stack<TreeNode>();
+		stack.push(root);
+		while (!stack.isEmpty()) {
+			root = stack.pop();
+			list.add(root.val);
+			if (root.right != null)
+				stack.push(root.right);
+			if (root.left != null)
+				stack.push(root.left);
+		}
+		return list;
 	}
 
 	/**
