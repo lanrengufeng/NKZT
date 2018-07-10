@@ -15,9 +15,12 @@ import org.w3c.dom.ls.LSInput;
 public class Solution {
 	public static void main(String[] args) {
 		Solution so = new Solution();
+		
+		System.out.println(so.isNumeric("-.2".toCharArray()));
+		
 		// [16,14,12,10,8,6,4],5
-		int[] arr = { 2, 3, 4, 2, 6, 2, 5, 1 };
-		System.out.println(so.maxInWindows(arr, 1).toString());
+		//int[] arr = { 2, 3, 4, 2, 6, 2, 5, 1 };
+		//System.out.println(so.maxInWindows(arr, 1).toString());
 
 		/*
 		 * TreeNode root = new TreeNode(1); root.left = new TreeNode(2);
