@@ -1,18 +1,33 @@
 package huawei.jishi;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Map.Entry;
+
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeMap;
-
-import leetcode.TreeNode;
+import java.util.TreeSet;
 
 public class Main {
 	public static void main(String[] args) {
 		Main mm = new Main();
 
-		mm.numOfChar();
+		mm.maxValue();
+
+		// mm.numOf1();
+
+		// mm.sortString();
+
+		/*
+		 * Scanner in = new Scanner(System.in);
+		 * System.out.println(mm.reverse(in.nextLine())); in.close();
+		 */
+
+		// mm.reverseNum();
+
+		// mm.numOfChar();
 
 		// mm.noRepeatNum();
 
@@ -34,7 +49,138 @@ public class Main {
 		// in.close();
 	}
 
+	/**
+	 * 题目描述 王强今天很开心，公司发给N元的年终奖。王强决定把年终奖用于购物，他把想买的物品分为两类：主件与附件，附件是从属于某个主件的，
+	 * 下表就是一些主件与附件的例子： 主件 附件 电脑 打印机，扫描仪 书柜 图书 书桌 台灯，文具 工作椅 无
+	 * 如果要买归类为附件的物品，必须先买该附件所属的主件。每个主件可以有 0 个、 1 个或 2
+	 * 个附件。附件不再有从属于自己的附件。王强想买的东西很多，为了不超出预算，他把每件物品规定了一个重要度，分为 5 等：用整数 1 ~ 5 表示，第
+	 * 5 等最重要。他还从因特网上查到了每件物品的价格（都是 10 元的整数倍）。他希望在不超过 N 元（可以等于 N
+	 * 元）的前提下，使每件物品的价格与重要度的乘积的总和最大。 设第 j 件物品的价格为 v[j] ，重要度为 w[j] ，共选中了 k
+	 * 件物品，编号依次为 j 1 ， j 2 ，……， j k ，则所求的总和为： v[j 1 ]*w[j 1 ]+v[j 2 ]*w[j 2 ]+ …
+	 * +v[j k ]*w[j k ] 。（其中 * 为乘号） 请你帮助王强设计一个满足要求的购物单。
+	 * 
+	 * 
+	 * 
+	 * 输入描述: 输入的第 1 行，为两个正整数，用一个空格隔开：N m
+	 * 
+	 * （其中 N （ <32000 ）表示总钱数， m （ <60 ）为希望购买物品的个数。）
+	 * 
+	 * 
+	 * 从第 2 行到第 m+1 行，第 j 行给出了编号为 j-1 的物品的基本数据，每行有 3 个非负整数 v p q
+	 * 
+	 * 
+	 * （其中 v 表示该物品的价格（ v<10000 ）， p 表示该物品的重要度（ 1 ~ 5 ）， q 表示该物品是主件还是附件。如果 q=0
+	 * ，表示该物品为主件，如果 q>0 ，表示该物品为附件， q 是所属主件的编号）
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 输出描述: 输出文件只有一个正整数，为不超过总钱数的物品的价格与重要度乘积的总和的最大值（ <200000 ）。
+	 */
+	public void maxValue() {
+		Scanner in = new Scanner(System.in);
+		int N = in.nextInt();
+		int m = in.nextInt();
+		int[] v = new int[m + 1]; // 物品的价格
+		int[] p = new int[m + 1]; // 物品的重要度
+		int[] q = new int[m + 1]; // 0表示为主件，否则为附件所属主件的编号
+		for (int i = 1; i <= m; i++) {
+			v[i] = in.nextInt();
+			p[i] = v[i] * in.nextInt();
+			q[i] = in.nextInt();
+		}
 
+		int[][] dp = new int[m + 1][N + 1]; // dp[i][j]表示总钱数为j时从前i件物品中能获得的最大价值
+		for (int i = 1; i <= m; i++) {
+			for (int j = 1; j <= N; j++) {
+				if (q[i] == 0) { // 第i个物品是主件
+					if (v[i] <= j)
+						dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - v[i]] + p[i]);
+					else
+						dp[i][j] = dp[i - 1][j];
+				} else { // 第i个物品是附件 所属主件编号为q[i]
+					if (v[i] + v[q[i]] <= j)
+						dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - v[i] - v[q[i]]] + p[i] + p[q[i]]);
+					else
+						dp[i][j] = dp[i - 1][j];
+				}
+			}
+		}
+		System.out.println(dp[m][N]);
+		in.close();
+	}
+
+	/**
+	 * 统计二进制中1的个数
+	 */
+	public void numOf1() {
+		Scanner in = new Scanner(System.in);
+		int n = in.nextInt();
+		int cnt = 0;
+		while (n != 0) {
+			cnt++;
+			n &= (n - 1);
+		}
+		System.out.println(cnt);
+		in.close();
+	}
+
+	/**
+	 * 字符串字典序排序
+	 */
+	public void sortString() {
+		Scanner in = new Scanner(System.in);
+		int n = in.nextInt();
+		in.nextLine();
+		ArrayList<String> set = new ArrayList<String>();
+		for (int i = 0; i < n; i++) {
+			set.add(in.nextLine());
+		}
+		Collections.sort(set);
+		for (String s : set) {
+			System.out.println(s);
+		}
+		in.close();
+	}
+
+	/**
+	 * 题目描述 将一个英文语句以单词为单位逆序排放。例如“I am a boy”，逆序排放后为“boy a am I”
+	 * 所有单词之间用一个空格隔开，语句中除了英文字母外，不再包含其他字符
+	 * 
+	 * @param sentence
+	 * @return
+	 */
+	public String reverse(String sentence) {
+		sentence = new StringBuilder(sentence).reverse().toString();
+		String[] ss = sentence.split(" ");
+		if (ss.length <= 1)
+			return sentence;
+		sentence = "";
+		for (int i = 0; i < ss.length; i++) {
+			String s = ss[i];
+			sentence += new StringBuilder(s).reverse().toString() + " ";
+		}
+		return sentence.substring(0, sentence.length() - 1);
+	}
+
+	/**
+	 * 题目描述 描述：
+	 * 
+	 * 输入一个整数，将这个整数以字符串的形式逆序输出
+	 * 
+	 * 程序不考虑负数的情况，若数字含有0，则逆序形式也含有0，如输入为100，则输出为001
+	 * 
+	 * 
+	 * 
+	 * 输入描述: 输入一个int整数
+	 * 
+	 * 输出描述: 将这个整数以字符串的形式逆序输出
+	 */
+	public void reverseNum() {
+		Scanner in = new Scanner(System.in);
+		System.out.println(new StringBuilder(in.next()).reverse());
+		in.close();
+	}
 
 	/**
 	 * 题目描述 编写一个函数，计算字符串中含有的不同字符的个数。字符在ACSII码范围内(0~127)。不在范围内的不作统计。
