@@ -16,7 +16,11 @@ public class Solution {
 	public static void main(String[] args) {
 		Solution so = new Solution();
 		
-		System.out.println(so.isNumeric("-.2".toCharArray()));
+		char[] str = {  };
+		char[] pattern = { '.', '*' };
+		System.out.println(so.match(str, pattern));
+		
+		//System.out.println(so.isNumeric("-.2".toCharArray()));
 		
 		// [16,14,12,10,8,6,4],5
 		//int[] arr = { 2, 3, 4, 2, 6, 2, 5, 1 };
@@ -37,9 +41,7 @@ public class Solution {
 		char[] chs = { '-', '1', '.', '2', 'e', '3' };
 		// System.out.println(so.isNumeric(chs));
 
-		char[] str = { 'a' };
-		char[] pattern = { '.', '*' };
-		// System.out.println(so.match(str, pattern));
+		
 
 		// System.out.println(so.StrToInt("+232323"));
 
